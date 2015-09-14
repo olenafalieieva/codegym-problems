@@ -9,6 +9,7 @@ public class FibonacciHeapTest extends AbstractTest {
 
   int[] input;
   int expected;
+  int expected_next;
   Runnable task = new Runnable() {
     @Override
     public void run() {
@@ -28,22 +29,27 @@ public class FibonacciHeapTest extends AbstractTest {
         String str = minNode.printNode(0);
         Common.fail(String.valueOf(actual) + str);
       }
+      int actual_next = minNode.next.getKey();
+      if (actual_next != expected_next) {
+        Common.fail(String.valueOf(actual) + str);
+      }
     }
   };
 
-  public FibonacciHeapTest(int[] input, int expected) {
+  public FibonacciHeapTest(int[] input, int expected, int expected_next) {
     super("FibonacciHeap", "FibNode");
     this.input = input;
     this.expected = expected;
+    this.expected_next = expected_next; 
   }
 
   @Parameterized.Parameters
   public static Collection<Object[]> data() {
     return Arrays.asList(new Object[][]{
-        {new int[]{1, 2}, 1},
-        {new int[]{5, 2, 3}, 2}, // returns minKey() after minNode was extracted
+        {new int[]{1, 2}, 1, 2},
+        {new int[]{5, 2, 3}, 2, 5}, // returns minKey() after minNode was extracted
         {new int[]{100, 2, 3}, 2},
-        {new int[]{10, 20, 3, 4, 0, 9}, 0},
+        {new int[]{10, 20, 3, 4, 0, 9}, 0, 3},
     });
   }
 
@@ -60,6 +66,8 @@ public class FibonacciHeapTest extends AbstractTest {
         .append(Common.printArray(input))
         .append("\nExpected: ")
         .append(expected)
+        .append("\nExpected_next: ")
+        .append(expected_next)
         .toString();
 
   }
